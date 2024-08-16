@@ -9,7 +9,7 @@ st.set_page_config(
     page_title="Metaborong x Alphabots",
     page_icon="📈"
 )
-st.title("Long/Short trade prediction 📈")
+st.title("Moving Average Convergence/Divergence (MACD)")
 
 # Function to calculate MACD and Signal Line
 def calculate_macd(df, short_window=12, long_window=26, signal_window=9):
@@ -32,38 +32,48 @@ def generate_signals(df):
     return buy_signals, sell_signals
 
 # Function to plot MACD, Signal Line, and MACD Histogram
-def plot_macd(df, buy_signals, sell_signals):
-    plt.figure(figsize=(14, 7))
-    plt.plot(df.index, df['MACD'], label='MACD', color='b', alpha=0.75)
-    plt.plot(df.index, df['Signal_Line'], label='Signal Line', color='orange', alpha=0.75)
+def plot_macd(df, buy_signals, sell_signals, flag):
+    fig, ax1 = plt.subplots(figsize=(14, 7))
+
+    # Plot MACD, Signal Line, and Histogram on the first y-axis
+    ax1.plot(df.index, df['MACD'], label='MACD', color='b', alpha=0.75)
+    ax1.plot(df.index, df['Signal_Line'], label='Signal Line', color='orange', alpha=0.75)
+    
     # Normalize the histogram values for better visualization
     hist_values = df['MACD_Histogram'].values
+    colors = ['lightgreen' if val >= 0 else 'lightcoral' for val in hist_values]
+    ax1.bar(df.index, hist_values, color=colors, alpha=0.5, width=0.005)
     
-    # Define colors based on whether the histogram value is positive or negative
-    colors = ['green' if val >= 0 else 'red' for val in hist_values]
-    
-    # Plot the MACD histogram with colors and ensure bars reflect actual values
-    plt.bar(df.index, hist_values, color=colors, alpha=0.5, width=0.005)
-    
+    # Plot buy/sell signals
     if not buy_signals.empty:
-        plt.plot(buy_signals.index, buy_signals['MACD'], '^', markersize=10, color='g', lw=0, label='Buy Signal')
-    if not sell_signals.empty:
-        plt.plot(sell_signals.index, sell_signals['MACD'], 'v', markersize=10, color='r', lw=0, label='Sell Signal')
+        ax1.plot(buy_signals.index, buy_signals['MACD'], '^', markersize=10, color='g', lw=0, label='Buy Signal')
+        if flag==1:
+            for signal in buy_signals.index:
+                ax1.axvline(x=signal, color='g', linestyle='--', alpha=0.75, label='Buy Signal' if signal == buy_signals.index[0] else "")
     
-    plt.title('MACD Analysis')
-    plt.xlabel('Date')
+    if not sell_signals.empty:
+        ax1.plot(sell_signals.index, sell_signals['MACD'], 'v', markersize=10, color='r', lw=0, label='Sell Signal')
+        if flag==1:
+            for signal in sell_signals.index:
+                ax1.axvline(x=signal, color='r', linestyle='--', alpha=0.75, label='Sell Signal' if signal == sell_signals.index[0] else "")
+    
+    ax1.set_xlabel('Date')
+    ax1.set_ylabel('MACD')
+    # ax1.set_ylim([min(hist_values) * 1.2, max(hist_values) * 1.2])  # Set y-axis limits for MACD histogram
+    ax1.legend(loc='upper left')
+    ax1.grid(True)
+
+    # Create a second y-axis for Close prices
+    ax2 = ax1.twinx()
+    ax2.plot(df.index, df['Close'], label='Close Prices', color='black', alpha=0.75)
+    ax2.set_ylabel('Close Prices')
+    ax2.legend(loc='upper right')
+
+    # Rotate the x-axis labels for better readability
     plt.xticks(rotation=90)
     
-    # Convert times to datetime with a consistent date
-    start_time = pd.Timestamp("2024-01-01 09:15:00+05:30")
-    end_time = pd.Timestamp("2024-01-01 15:30:00+05:30")
-    
-    # Apply xlim with these datetime objects
-    plt.xlim([start_time, end_time])
-    
-    plt.ylabel('MACD')
-    plt.legend(loc='upper left')
-    plt.grid(True)
+    # Set the title and show the plot
+    plt.title('MACD Analysis')
     st.pyplot(plt)
 
 # Read data
@@ -100,7 +110,7 @@ buf = plot_candlestick(df1)
 # Display the plot
 st.image(buf)
 st.header("All Entry and Exit points")
-plot_macd(df_macd, buy_signals, sell_signals)
+plot_macd(df_macd, buy_signals, sell_signals, 0)
 
 # Define time range slider
 min_time = df2.index.min().time()
@@ -132,7 +142,7 @@ c = 1
 # Plot MACD, Signal Line, and selected trades
 for trade in trades:
     st.header(f"Trade {c}:")
-    plot_macd(filtered_df, trade[0], trade[1])
+    plot_macd(filtered_df, trade[0], trade[1],1)
     c += 1
 
 # Calculate and display profit/loss for each trade

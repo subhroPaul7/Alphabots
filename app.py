@@ -51,7 +51,7 @@ change1 = 0
 change2 = 0
 if True in long:
     i1 = long.index(True)
-    st.info(long[i1:])
+    # st.info(long[i1:])
     if True in long[i1+1:]:
         i2 = long.index(True, long.index(True)+1)
         buy1_time = times_list[i1]
