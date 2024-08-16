@@ -1,56 +1,75 @@
-# Long/Short Trade Prediction 📈
+# Metaborong x Alphabots 📈
 
-This project demonstrates a simple Streamlit app that predicts long and short trades based on historical minute-level stock data. The app utilizes a slider to adjust thresholds and percentages to simulate trade decisions and visualize them on a plot.
+This repository contains two Streamlit applications for analyzing and visualizing trading data. The primary focus is on predicting trade opportunities using technical indicators and visualizing trade signals on candlestick charts.
 
-## Requirements
+## Overview
 
-- Python 3.x
-- Streamlit
-- Pandas
-- Matplotlib
+1. **`app.py`**:
+   - This Streamlit app allows users to select thresholds and percentage values to determine potential long or short trades.
+   - It visualizes the trade signals on a line chart of closing prices and annotates buy/sell points.
+   - Trades are determined based on price thresholds set by the user, and only two trades per day are considered.
 
-To install the required packages, use the following command:
+2. **`macd.py`**:
+   - This Streamlit app performs MACD (Moving Average Convergence Divergence) analysis on minute-level stock data.
+   - It calculates MACD, Signal Line, and MACD Histogram, and generates buy/sell signals based on MACD crossovers.
+   - The app displays candlestick charts and MACD plots with buy/sell signals, and provides a detailed trade analysis.
 
-```bash
-pip install streamlit pandas matplotlib
-```
+## Setup
 
-## Usage
-
-1. **Prepare Data**: Ensure you have a CSV file named `PAYTM_minute.csv` in a `data` directory. The file should have at least two columns: `date` and `close`. The `date` column should contain datetime values, and the `close` column should contain closing prices.
-
-2. **Run the App**: Execute the Streamlit app with the following command:
-
+1. **Clone the repository**:
    ```bash
-   streamlit run app.py
+   git clone https://github.com/yourusername/repositoryname.git
+   cd repositoryname
    ```
 
-3. **Adjust Parameters**: Use the sliders in the app to select the threshold and percentage values. The app will then compute potential long and short trades based on these parameters.
+2. **Install the required dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-4. **View Results**: The app displays the predicted trades and visualizes them on a graph showing closing prices over time. The graph highlights the trade points and provides annotations with the trade prices.
+   Create a `requirements.txt` file with the following content:
+   ```
+   pandas
+   streamlit
+   matplotlib
+   mplfinance
+   numpy
+   ```
 
-## Code Explanation
+3. **Prepare your data**:
+   - Ensure you have the following CSV files:
+     - `data/PAYTM_minute.csv` (for `app.py`)
+     - `TCS_minute.csv` (for `macd.py`)
 
-1. **Import Libraries**: Import necessary libraries including Pandas for data manipulation, Streamlit for the web interface, and Matplotlib for plotting.
+4. **Run the Streamlit apps**:
+   - For `app.py`:
+     ```bash
+     streamlit run app.py
+     ```
+   - For `macd.py`:
+     ```bash
+     streamlit run macd.py
+     ```
 
-2. **Read Data**: Load the CSV data into a Pandas DataFrame and convert the `date` column to datetime format.
+## Features
 
-3. **Parameter Configuration**: Use Streamlit sliders to select threshold values and percentage changes for long and short trade decisions.
+### `app.py`
+- Allows the user to set thresholds and percentage values to identify long/short trade opportunities.
+- Displays closing prices with annotated trade signals.
+- Provides an interactive visualization of potential trades and trade outcomes.
 
-4. **Trade Calculation**: Compute potential long and short trades based on the selected parameters. The app determines trade times and displays relevant messages.
+### `macd.py`
+- Calculates and visualizes MACD, Signal Line, and MACD Histogram.
+- Displays buy and sell signals based on MACD crossovers.
+- Shows candlestick charts and detailed trade analysis.
 
-5. **Plot Visualization**: Create a plot of closing prices over time, highlighting trade points with annotations.
+## Data
 
-## Example
-
-Here's an example of how the app will look and function:
-
-- **Slider for Threshold**: Adjust this to set the initial threshold for long/short trade decisions.
-- **Slider for Percentage**: Adjust this to set the percentage change for the second threshold.
-- **Trade Results**: The app will display messages indicating trade points and visualize them on a graph.
+- The data used in these apps should be in minute-level format with columns for date and price values. Make sure the CSV files are formatted correctly and located in the appropriate directories.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 
