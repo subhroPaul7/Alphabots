@@ -42,10 +42,12 @@ else:
 
 square_off_price = close["close"][374]
 opening = close["close"][0] # time- 9:16
-threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
-
+# threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
+threshold = st.selectBox("Select the time for base price for the trade", times_list[:375])
+pos1 = times_list[:375].index(threshold)
+base_price = close['close'][pos1]
 # Creating the second slider with steps of 2
-percentage = st.slider('Select a value for the percentage', min_value=0.00, max_value=10.00, value=0.5, step=0.01)
+percentage = st.slider('Select a value for the percentage', min_value=0.00, max_value=1.00, value=0.01, step=0.001)
 long_threshold = 1+(percentage/100)
 short_threshold = 1-(percentage/100)
 no_of_trades = 2
@@ -53,14 +55,14 @@ long1 = []
 short = []
 j=0
 for i in close["close"]:
-    if i>threshold:
+    if i>base_price:
         if j>=no_of_trades:
             break
-        if i>=threshold*long_threshold:
+        if i>=base_price*long_threshold:
             long1.append(True)
             short.append(False)
             j+=1
-        elif i<=threshold*short_threshold:
+        elif i<=base_price*short_threshold:
             long1.append(False)
             short.append(True)
             j+=1
