@@ -55,7 +55,7 @@ no_of_trades = 2
 long1 = []
 short = []
 j=0
-for i in close["close"][pos:]:
+for i in close["close"][pos+1:]:
     if j>=no_of_trades:
         break
     if i>=base_price*long_threshold:
