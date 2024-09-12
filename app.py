@@ -54,21 +54,20 @@ no_of_trades = 2
 long1 = []
 short = []
 j=0
-for i in close["close"]:
-    if i>base_price:
-        if j>=no_of_trades:
-            break
-        if i>=base_price*long_threshold:
-            long1.append(True)
-            short.append(False)
-            j+=1
-        elif i<=base_price*short_threshold:
-            long1.append(False)
-            short.append(True)
-            j+=1
-        else:
-            long1.append(False)
-            short.append(False)
+for i in close["close"][pos:]:
+    if j>=no_of_trades:
+        break
+    if i>=base_price*long_threshold:
+        long1.append(True)
+        short.append(False)
+        j+=1
+    elif i<=base_price*short_threshold:
+        long1.append(False)
+        short.append(True)
+        j+=1
+    else:
+        long1.append(False)
+        short.append(False)
     # opening = i
 i1 = 400
 i2 = 400
