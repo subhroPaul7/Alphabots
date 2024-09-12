@@ -77,6 +77,8 @@ trade1_type = ""
 trade2_type = ""
 change1 = 0
 change2 = 0
+profit1 = False
+profit2 = False
 if True in long:
     i1 = long.index(True)
     # st.info(long[i1:])
@@ -88,6 +90,10 @@ if True in long:
         buy2_price = close["close"][i2]
         change1 = buy1_price - square_off_price
         change2 = buy2_price - square_off_price
+        if square_off_price>buy1_price:
+            profit1 = True
+        if square_off_price>buy2_price:
+            profit2 = True
         trade1_type = "long"
         trade2_type = "long"
         st.success(f"Long at {buy1_time} at price Rs. {buy1_price}")
@@ -101,6 +107,10 @@ if True in long:
             buy2_price = close["close"][i2]
             change1 = buy1_price - square_off_price
             change2 = square_off_price - buy2_price
+            if square_off_price>buy1_price:
+                profit1 = True
+            if square_off_price<buy2_price:
+                profit2 = True
             trade1_type = "long"
             trade2_type = "short"
             st.success(f"Long at {buy1_time} at price Rs. {buy1_price}")
@@ -112,6 +122,10 @@ if True in long:
             buy2_price = close["close"][i2]
             change1 = square_off_price - buy1_price
             change2 = buy2_price - square_off_price
+            if square_off_price<buy1_price:
+                profit1 = True
+            if square_off_price>buy2_price:
+                profit2 = True
             trade1_type = "short"
             trade2_type = "long"
             st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
@@ -120,6 +134,8 @@ if True in long:
         buy1_time = times_list[i1]
         buy1_price = close['close'][i1]
         change1 = buy1_price - square_off_price
+        if square_off_price>buy1_price:
+            profit1 = True
         trade1_type = "long"
         st.success(f"Long at {buy1_time} at price Rs. {buy1_price}")
         st.info("Only 1 trade possible today.")
@@ -133,6 +149,10 @@ elif True in short:
         buy2_price = close["close"][i2]
         change1 = square_off_price - buy1_price
         change2 = square_off_price - buy2_price
+        if square_off_price<buy1_price:
+            profit1 = True
+        if square_off_price<buy2_price:
+            profit2 = True
         trade1_type = "short"
         trade2_type = "short"
         st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
@@ -146,6 +166,10 @@ elif True in short:
             buy2_price = close["close"][i2]
             change1 = square_off_price - buy1_price
             change2 = buy2_price - square_off_price
+            if square_off_price<buy1_price:
+                profit1 = True
+            if square_off_price>buy2_price:
+                profit2 = True
             trade1_type = "short"
             trade2_type = "long"
             st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
@@ -157,6 +181,10 @@ elif True in short:
             buy2_price = close["close"][i2]
             change1 = buy1_price - square_off_price
             change2 = square_off_price - buy2_price
+            if square_off_price>buy1_price:
+                profit1 = True
+            if square_off_price<buy2_price:
+                profit2 = True
             trade1_type = "long"
             trade2_type = "short"
             st.success(f"Long at {buy1_time} at price Rs. {buy1_price}")
@@ -165,6 +193,8 @@ elif True in short:
         buy1_time = times_list[i1]
         buy1_price = close["close"][i1]
         change1 = square_off_price - buy1_price
+        if square_off_price<buy1_price:
+            profit1 = True
         trade1_type = "short"
         st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
         st.info("Only 1 trade possible today.")
@@ -201,25 +231,27 @@ if flag==True:
     st.pyplot(plt)
 
     if trade1_type!="":
-        if change1>0:
-            st.info(f"Profit of Rs. {change1} per share for 1st trade")
-        elif change1<0:
-            st.info(f"Loss of Rs. {change1} per share for 1st trade")
+        if change1!=0:
+            if profit1:
+                st.info(f"Profit of Rs. {change1} per share for 1st trade")
+            else:
+                st.info(f"Loss of Rs. {change1} per share for 1st trade")
         else:
             st.info(f"Break even for 1st trade")
 
         if trade2_type!="":
-            if change2>0:
-                st.info(f"Profit of Rs. {change2} per share for 2nd trade")
-            elif change2<0:
-                st.info(f"Loss of Rs. {change2} per share for 2nd trade")
+            if change2!=0:
+                if profit2: 
+                    st.info(f"Profit of Rs. {change2} per share for 2nd trade")
+                else:
+                    st.info(f"Loss of Rs. {change2} per share for 2nd trade")
             else:
                 st.info(f"Break even for 2nd trade")
 
-        net_change = change1 + change2
-        if change2>0:
-            st.info(f"Net Profit of Rs. {change2} per share for today")
-        elif change2<0:
-            st.info(f"Net Loss of Rs. {change2} per share for today")
-        else:
-            st.info(f"Break even for today")
+        # net_change = change1 + change2
+        # if change2>0:
+        #     st.info(f"Net Profit of Rs. {change2} per share for today")
+        # elif change2<0:
+        #     st.info(f"Net Loss of Rs. {change2} per share for today")
+        # else:
+        #     st.info(f"Break even for today")
