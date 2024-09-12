@@ -43,7 +43,7 @@ else:
 square_off_price = close["close"][374]
 opening = close["close"][0] # time- 9:16
 # threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
-threshold = st.selectBox("Select the time for base price for the trade", times_list[:375])
+threshold = st.selectbox("Select the time for base price for the trade", times_list[:375])
 pos1 = times_list[:375].index(threshold)
 base_price = close['close'][pos1]
 # Creating the second slider with steps of 2
