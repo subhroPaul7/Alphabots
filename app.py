@@ -40,8 +40,6 @@ elif pos == 1:
     close = df[["close"]].iloc[start:end-1].reset_index(drop=True)
 else:
     close = df[["close"]].iloc[start-1:end-1].reset_index(drop=True)
-
-st.write(close)
 square_off_price = close["close"][374]
 opening = close["close"][0] # time- 9:16
 threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
@@ -58,11 +56,11 @@ for i in close["close"]:
     if i>threshold:
         if j>=no_of_trades:
             break
-        if i>=opening*long_threshold:
+        if i>=threshold*long_threshold:
             long1.append(True)
             short.append(False)
             j+=1
-        elif i<=opening*short_threshold:
+        elif i<=threshold*short_threshold:
             long1.append(False)
             short.append(True)
             j+=1
