@@ -178,9 +178,9 @@ if flag==True:
     plt.scatter(buy2_time,close['close'][i2], color='red')
     plt.scatter(times_list[374], df['close'][374], color = "green", label='Square off')
     # Annotate the scatter points
-    plt.annotate(f'{df["close"][i1]:.2f}', (buy1_time, df['close'][i1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
-    plt.annotate(f'{df["close"][i2]:.2f}', (buy2_time, df['close'][i2]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
-    plt.annotate(f'{df["close"][374]:.2f}', (times_list[374], df['close'][374]), textcoords="offset points", xytext=(0,10), ha='center', color='green')
+    plt.annotate(f'{close["close"][i1]:.2f}', (buy1_time, close['close'][i1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
+    plt.annotate(f'{close["close"][i2]:.2f}', (buy2_time, close['close'][i2]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
+    plt.annotate(f'{close["close"][374]:.2f}', (times_list[374], close['close'][374]), textcoords="offset points", xytext=(0,10), ha='center', color='green')
     # Optionally, reduce the number of x-ticks
     plt.xticks(range(0, len(times_list[:375]), 15), rotation=45)
 
