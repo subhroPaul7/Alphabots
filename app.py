@@ -29,7 +29,6 @@ test_date = st.date_input("Select a date between 28 June 2024 and 30 August 2024
     min_value=min_date,
     max_value=max_date)
 date_str = test_date.strftime("%Y-%m-%d")
-st.write(date_str)
 pos = lst.index(date_str)
 start = pos*375
 end = (pos+1)*375
@@ -41,7 +40,6 @@ elif pos == 1:
 else:
     close = df[["close"]].iloc[start-1:end-1].reset_index(drop=True)
 
-st.write(close)
 square_off_price = close["close"][374]
 opening = close["close"][0] # time- 9:16
 threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
@@ -207,13 +205,13 @@ else:
 
 if flag==True:
     plt.figure(figsize=(10, 6))
-    plt.plot(times_list[:375], df['close'][:375], linestyle='-', color='b')
+    plt.plot(times_list[:375], close['close'][:375], linestyle='-', color='b')
 
     if i1!=400:
         plt.scatter(buy1_time,close['close'][i1], color='red', label='Trade')
     if i2!=400:
         plt.scatter(buy2_time,close['close'][i2], color='red')
-    plt.scatter(times_list[374], df['close'][374], color = "green", label='Square off')
+    plt.scatter(times_list[374], close['close'][374], color = "green", label='Square off')
     # Annotate the scatter points
     if i1!=400:
         plt.annotate(f'{close["close"][i1]:.2f}', (buy1_time, close['close'][i1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
