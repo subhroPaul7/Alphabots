@@ -29,6 +29,7 @@ test_date = st.date_input("Select a date between 28 June 2024 and 30 August 2024
     min_value=min_date,
     max_value=max_date)
 date_str = test_date.strftime("%Y-%m-%d")
+st.write(date_str)
 pos = lst.index(date_str)
 start = pos*375
 end = (pos+1)*375
