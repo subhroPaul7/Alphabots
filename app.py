@@ -236,18 +236,18 @@ if flag==True:
     if trade1_type!="":
         if change1!=0:
             if profit1:
-                st.info(f"Profit of Rs. {change1} per share for 1st trade")
+                st.info(f"Profit of Rs. {abs(change1)} per share for 1st trade")
             else:
-                st.info(f"Loss of Rs. {change1} per share for 1st trade")
+                st.info(f"Loss of Rs. {abs(change1)} per share for 1st trade")
         else:
             st.info(f"Break even for 1st trade")
 
         if trade2_type!="":
             if change2!=0:
                 if profit2: 
-                    st.info(f"Profit of Rs. {change2} per share for 2nd trade")
+                    st.info(f"Profit of Rs. {abs(change2)} per share for 2nd trade")
                 else:
-                    st.info(f"Loss of Rs. {change2} per share for 2nd trade")
+                    st.info(f"Loss of Rs. {abs(change2)} per share for 2nd trade")
             else:
                 st.info(f"Break even for 2nd trade")
 
