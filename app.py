@@ -45,7 +45,9 @@ opening = close["close"][0] # time- 9:16
 # threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
 threshold = st.selectbox("Select the time for base price for the trade", times_list[:375])
 pos1 = times_list[:375].index(threshold)
+st.write(pos1)
 base_price = close['close'][pos1]
+st.write(f"Base price at selected time: {base_price}")
 # Creating the second slider with steps of 2
 percentage = st.slider('Select a value for the percentage', min_value=0.00, max_value=1.00, value=0.01, step=0.001)
 long_threshold = 1+(percentage/100)
