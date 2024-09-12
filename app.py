@@ -58,11 +58,11 @@ j=0
 for i in close["close"][pos+1:]:
     if j>=no_of_trades:
         break
-    if i>=base_price*long_threshold:
+    if i>base_price*long_threshold:
         long1.append(True)
         short.append(False)
         j+=1
-    elif i<=base_price*short_threshold:
+    elif i<base_price*short_threshold:
         long1.append(False)
         short.append(True)
         j+=1
