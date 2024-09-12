@@ -48,9 +48,9 @@ pos1 = times_list[:375].index(threshold)
 base_price = close['close'][pos1]
 st.write(f"Base price at selected time: {base_price}")
 # Creating the second slider with steps of 2
-percentage = st.slider('Select a threshold for the percentage', min_value=0.00, max_value=1.00, value=0.01, step=0.001)
-long_threshold = 1+(percentage)
-short_threshold = 1-(percentage)
+percentage = st.slider('Select a value for the percentage', min_value=0.00, max_value=10.00, value=0.1, step=0.01)
+long_threshold = 1+(percentage/100)
+short_threshold = 1-(percentage/100)
 no_of_trades = 2
 long1 = []
 short = []
