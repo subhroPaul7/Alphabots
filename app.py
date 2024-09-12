@@ -30,8 +30,8 @@ test_date = st.date_input("Select a date between 28 June 2024 and 30 August 2024
     max_value=max_date)
 date_str = test_date.strftime("%Y-%m-%d")
 pos = lst.index(date_str)
-start = pos*(m)
-end = (pos+1)*m
+start = pos*375
+end = (pos+1)*375
 flag=True
 close = df[["close"]].iloc[start-1:end-1].reset_index(drop=True)
 square_off_price = close["close"][374]
