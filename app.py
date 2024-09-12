@@ -200,26 +200,26 @@ if flag==True:
     plt.legend()
     st.pyplot(plt)
 
-    # if trade1_type!="":
-    #     if change1>0:
-    #         st.info(f"Profit of Rs. {change1} per share for 1st trade")
-    #     elif change1<0:
-    #         st.info(f"Loss of Rs. {change1} per share for 1st trade")
-    #     else:
-    #         st.info(f"Break even for 1st trade")
+    if trade1_type!="":
+        if change1>0:
+            st.info(f"Profit of Rs. {change1} per share for 1st trade")
+        elif change1<0:
+            st.info(f"Loss of Rs. {change1} per share for 1st trade")
+        else:
+            st.info(f"Break even for 1st trade")
 
-    #     if trade2_type!="":
-    #         if change2>0:
-    #             st.info(f"Profit of Rs. {change2} per share for 2nd trade")
-    #         elif change2<0:
-    #             st.info(f"Loss of Rs. {change2} per share for 2nd trade")
-    #         else:
-    #             st.info(f"Break even for 2nd trade")
+        if trade2_type!="":
+            if change2>0:
+                st.info(f"Profit of Rs. {change2} per share for 2nd trade")
+            elif change2<0:
+                st.info(f"Loss of Rs. {change2} per share for 2nd trade")
+            else:
+                st.info(f"Break even for 2nd trade")
 
-    #     net_change = change1 + change2
-    #     if change2>0:
-    #         st.info(f"Net Profit of Rs. {change2} per share for today")
-    #     elif change2<0:
-    #         st.info(f"Net Loss of Rs. {change2} per share for today")
-    #     else:
-    #         st.info(f"Break even for today")
+        net_change = change1 + change2
+        if change2>0:
+            st.info(f"Net Profit of Rs. {change2} per share for today")
+        elif change2<0:
+            st.info(f"Net Loss of Rs. {change2} per share for today")
+        else:
+            st.info(f"Break even for today")
