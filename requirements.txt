@@ -2,3 +2,5 @@ pandas
 matplotlib
 streamlit
 mplfinance
+datetime
+functools

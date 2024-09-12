@@ -3,20 +3,40 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import sys
+import datetime
+from functools import reduce
+
+def unique(list1):
+    ans = reduce(lambda re, x: re+[x] if x not in re else re, list1, [])
+    return ans
 
 st.set_page_config(
     page_title="Metaborong x Alphabots",
     page_icon="📈"
 )
 st.title("Long/Short trade prediction 📈")
-df = pd.read_csv("data/TCS_minute.csv")
+df = pd.read_csv("data/data-NSE_FO_35000.csv")
 flag=True
 df['date'] = pd.to_datetime(df['date'])
 times_list = df['date'].dt.time.astype(str).tolist()
-close_2023_01_02 = df[["close"]].iloc[:375]
-square_off_price = close_2023_01_02["close"][374]
-opening = close_2023_01_02["close"][0] # time- 9:16
-threshold = st.slider('Select a value for the first threshold', min_value=close_2023_01_02['close'].min(), max_value=close_2023_01_02['close'].max(), value=opening)
+date = df['date'].dt.date.astype(str).tolist()
+lst = unique(date)
+min_date = datetime.date(2024, 6, 28)
+max_date = datetime.date(2024, 8, 30)
+test_date = st.date_input("Select a date between 28 June 2024 and 30 August 2024",
+    value=min_date,
+    min_value=min_date,
+    max_value=max_date)
+st.write(test_date)
+st.write(type(test_date))
+pos = lst.index(test_date)
+start = pos*(m)
+end = (pos+1)*m
+flag=True
+close = df[["close"]].iloc[start-1:end-1].reset_index(drop=True)
+square_off_price = close["close"][374]
+opening = close["close"][0] # time- 9:16
+threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
 
 # Creating the second slider with steps of 2
 percentage = st.slider('Select a value for the percentage', min_value=0.00, max_value=10.00, value=0.5, step=0.01)
@@ -26,7 +46,7 @@ no_of_trades = 2
 long = []
 short = []
 j=0
-for i in close_2023_01_02["close"]:
+for i in close["close"]:
     if j>=no_of_trades:
         break
     if i>=opening*long_threshold:
@@ -56,8 +76,8 @@ if True in long:
         i2 = long.index(True, long.index(True)+1)
         buy1_time = times_list[i1]
         buy2_time = times_list[i2]
-        buy1_price = close_2023_01_02["close"][i1]
-        buy2_price = close_2023_01_02["close"][i2]
+        buy1_price = close["close"][i1]
+        buy2_price = close["close"][i2]
         change1 = buy1_price - square_off_price
         change2 = buy2_price - square_off_price
         trade1_type = "long"
@@ -69,8 +89,8 @@ if True in long:
         if i1<i2:
             buy1_time = times_list[i1]
             buy2_time = times_list[i2]
-            buy1_price = close_2023_01_02["close"][i1]
-            buy2_price = close_2023_01_02["close"][i2]
+            buy1_price = close["close"][i1]
+            buy2_price = close["close"][i2]
             change1 = buy1_price - square_off_price
             change2 = square_off_price - buy2_price
             trade1_type = "long"
@@ -80,8 +100,8 @@ if True in long:
         else:
             buy1_time = times_list[i2]
             buy2_time = times_list[i1]
-            buy1_price = close_2023_01_02["close"][i1]
-            buy2_price = close_2023_01_02["close"][i2]
+            buy1_price = close["close"][i1]
+            buy2_price = close["close"][i2]
             change1 = square_off_price - buy1_price
             change2 = buy2_price - square_off_price
             trade1_type = "short"
@@ -90,7 +110,7 @@ if True in long:
             st.success(f"Long at {buy2_time} at price Rs. {buy2_price}")
     else:
         buy1_time = times_list[i1]
-        buy1_price = close_2023_01_02['close'][i1]
+        buy1_price = close['close'][i1]
         change1 = buy1_price - square_off_price
         trade1_type = "long"
         st.success(f"Long at {buy1_time} at price Rs. {buy1_price}")
@@ -101,8 +121,8 @@ elif True in short:
         i2 = short.index(True, short.index(True)+1)
         buy1_time = times_list[i1]
         buy2_time = times_list[i2]
-        buy1_price = close_2023_01_02["close"][i1]
-        buy2_price = close_2023_01_02["close"][i2]
+        buy1_price = close["close"][i1]
+        buy2_price = close["close"][i2]
         change1 = square_off_price - buy1_price
         change2 = square_off_price - buy2_price
         trade1_type = "short"
@@ -114,8 +134,8 @@ elif True in short:
         if i1<i2:
             buy1_time = times_list[i1]
             buy2_time = times_list[i2]
-            buy1_price = close_2023_01_02["close"][i1]
-            buy2_price = close_2023_01_02["close"][i2]
+            buy1_price = close["close"][i1]
+            buy2_price = close["close"][i2]
             change1 = square_off_price - buy1_price
             change2 = buy2_price - square_off_price
             trade1_type = "short"
@@ -125,8 +145,8 @@ elif True in short:
         else:
             buy1_time = times_list[i2]
             buy2_time = times_list[i1]
-            buy1_price = close_2023_01_02["close"][i1]
-            buy2_price = close_2023_01_02["close"][i2]
+            buy1_price = close["close"][i1]
+            buy2_price = close["close"][i2]
             change1 = buy1_price - square_off_price
             change2 = square_off_price - buy2_price
             trade1_type = "long"
@@ -135,7 +155,7 @@ elif True in short:
             st.success(f"Short at {buy2_time} at price Rs. {buy2_price}")
     else:
         buy1_time = times_list[i1]
-        buy1_price = close_2023_01_02["close"][i1]
+        buy1_price = close["close"][i1]
         change1 = square_off_price - buy1_price
         trade1_type = "short"
         st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
@@ -148,8 +168,8 @@ if flag==True:
     plt.figure(figsize=(10, 6))
     plt.plot(times_list[:375], df['close'][:375], linestyle='-', color='b')
 
-    plt.scatter(buy1_time,close_2023_01_02['close'][i1], color='red', label='Trade')
-    plt.scatter(buy2_time,close_2023_01_02['close'][i2], color='red')
+    plt.scatter(buy1_time,close['close'][i1], color='red', label='Trade')
+    plt.scatter(buy2_time,close['close'][i2], color='red')
     plt.scatter(times_list[374], df['close'][374], color = "green", label='Square off')
     # Annotate the scatter points
     plt.annotate(f'{df["close"][i1]:.2f}', (buy1_time, df['close'][i1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
