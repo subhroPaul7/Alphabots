@@ -49,23 +49,24 @@ percentage = st.slider('Select a value for the percentage', min_value=0.00, max_
 long_threshold = 1+(percentage/100)
 short_threshold = 1-(percentage/100)
 no_of_trades = 2
-long = []
+long1 = []
 short = []
 j=0
 for i in close["close"]:
-    if j>=no_of_trades:
-        break
-    if i>=opening*long_threshold:
-        long.append(True)
-        short.append(False)
-        j+=1
-    elif i<=opening*short_threshold:
-        long.append(False)
-        short.append(True)
-        j+=1
-    else:
-        long.append(False)
-        short.append(False)
+    if i>threshold:
+        if j>=no_of_trades:
+            break
+        if i>=opening*long_threshold:
+            long1.append(True)
+            short.append(False)
+            j+=1
+        elif i<=opening*short_threshold:
+            long1.append(False)
+            short.append(True)
+            j+=1
+        else:
+            long1.append(False)
+            short.append(False)
     # opening = i
 i1 = 400
 i2 = 400
@@ -79,11 +80,11 @@ change1 = 0
 change2 = 0
 profit1 = False
 profit2 = False
-if True in long:
-    i1 = long.index(True)
-    # st.info(long[i1:])
-    if True in long[i1+1:]:
-        i2 = long.index(True, long.index(True)+1)
+if True in long1:
+    i1 = long1.index(True)
+    # st.info(long1[i1:])
+    if True in long1[i1+1:]:
+        i2 = long1.index(True, long1.index(True)+1)
         buy1_time = times_list[i1]
         buy2_time = times_list[i2]
         buy1_price = close["close"][i1]
@@ -157,8 +158,8 @@ elif True in short:
         trade2_type = "short"
         st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
         st.success(f"Short at {buy2_time} at price Rs. {buy2_price}")
-    elif True in long:
-        i2 = long.index(True)
+    elif True in long1:
+        i2 = long1.index(True)
         if i1<i2:
             buy1_time = times_list[i1]
             buy2_time = times_list[i2]
