@@ -16,6 +16,7 @@ st.set_page_config(
 )
 st.title("Long/Short trade prediction 📈")
 df = pd.read_csv("data/data-NSE_FO_35000.csv")
+df.columns = df.columns.str.lower()
 flag=True
 df['date'] = pd.to_datetime(df['date'])
 times_list = df['date'].dt.time.astype(str).tolist()
