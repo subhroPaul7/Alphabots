@@ -45,7 +45,6 @@ opening = close["close"][0] # time- 9:16
 # threshold = st.slider('Select a value for the first threshold', min_value=close['close'].min(), max_value=close['close'].max(), value=opening)
 threshold = st.selectbox("Select the time for base price for the trade", times_list[:375])
 pos1 = times_list[:375].index(threshold)
-st.write(pos1)
 base_price = close['close'][pos1]
 st.write(f"Base price at selected time: {base_price}")
 # Creating the second slider with steps of 2
@@ -88,10 +87,10 @@ if True in long1:
     # st.info(long1[i1:])
     if True in long1[i1+1:]:
         i2 = long1.index(True, long1.index(True)+1)
-        buy1_time = times_list[i1]
-        buy2_time = times_list[i2]
-        buy1_price = close["close"][i1]
-        buy2_price = close["close"][i2]
+        buy1_time = times_list[i1+pos1]
+        buy2_time = times_list[i2+pos1]
+        buy1_price = close["close"][i1+pos1]
+        buy2_price = close["close"][i2+pos1]
         change1 = buy1_price - square_off_price
         change2 = buy2_price - square_off_price
         if square_off_price>buy1_price:
@@ -105,10 +104,10 @@ if True in long1:
     elif True in short:
         i2 = short.index(True)
         if i1<i2:
-            buy1_time = times_list[i1]
-            buy2_time = times_list[i2]
-            buy1_price = close["close"][i1]
-            buy2_price = close["close"][i2]
+            buy1_time = times_list[i1+pos1]
+            buy2_time = times_list[i2+pos1]
+            buy1_price = close["close"][i1+pos1]
+            buy2_price = close["close"][i2+pos1]
             change1 = buy1_price - square_off_price
             change2 = square_off_price - buy2_price
             if square_off_price>buy1_price:
@@ -120,10 +119,10 @@ if True in long1:
             st.success(f"Long at {buy1_time} at price Rs. {buy1_price}")
             st.success(f"Short at {buy2_time} at price Rs. {buy2_price}")
         else:
-            buy1_time = times_list[i2]
-            buy2_time = times_list[i1]
-            buy1_price = close["close"][i1]
-            buy2_price = close["close"][i2]
+            buy1_time = times_list[i2+pos1]
+            buy2_time = times_list[i1+pos1]
+            buy1_price = close["close"][i1+pos1]
+            buy2_price = close["close"][i2+pos1]
             change1 = square_off_price - buy1_price
             change2 = buy2_price - square_off_price
             if square_off_price<buy1_price:
@@ -135,8 +134,8 @@ if True in long1:
             st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
             st.success(f"Long at {buy2_time} at price Rs. {buy2_price}")
     else:
-        buy1_time = times_list[i1]
-        buy1_price = close['close'][i1]
+        buy1_time = times_list[i1+pos1]
+        buy1_price = close['close'][i1+pos1]
         change1 = buy1_price - square_off_price
         if square_off_price>buy1_price:
             profit1 = True
@@ -147,10 +146,10 @@ elif True in short:
     i1 = short.index(True)
     if True in short[i1+1:]:
         i2 = short.index(True, short.index(True)+1)
-        buy1_time = times_list[i1]
-        buy2_time = times_list[i2]
-        buy1_price = close["close"][i1]
-        buy2_price = close["close"][i2]
+        buy1_time = times_list[i1+pos1]
+        buy2_time = times_list[i2+pos1]
+        buy1_price = close["close"][i1+pos1]
+        buy2_price = close["close"][i2+pos1]
         change1 = square_off_price - buy1_price
         change2 = square_off_price - buy2_price
         if square_off_price<buy1_price:
@@ -164,10 +163,10 @@ elif True in short:
     elif True in long1:
         i2 = long1.index(True)
         if i1<i2:
-            buy1_time = times_list[i1]
-            buy2_time = times_list[i2]
-            buy1_price = close["close"][i1]
-            buy2_price = close["close"][i2]
+            buy1_time = times_list[i1+pos1]
+            buy2_time = times_list[i2+pos1]
+            buy1_price = close["close"][i1+pos1]
+            buy2_price = close["close"][i2+pos1]
             change1 = square_off_price - buy1_price
             change2 = buy2_price - square_off_price
             if square_off_price<buy1_price:
@@ -179,10 +178,10 @@ elif True in short:
             st.success(f"Short at {buy1_time} at price Rs. {buy1_price}")
             st.success(f"Long at {buy2_time} at price Rs. {buy2_price}")
         else:
-            buy1_time = times_list[i2]
-            buy2_time = times_list[i1]
-            buy1_price = close["close"][i1]
-            buy2_price = close["close"][i2]
+            buy1_time = times_list[i2+pos1]
+            buy2_time = times_list[i1+pos1]
+            buy1_price = close["close"][i1+pos1]
+            buy2_price = close["close"][i2+pos1]
             change1 = buy1_price - square_off_price
             change2 = square_off_price - buy2_price
             if square_off_price>buy1_price:
@@ -194,8 +193,8 @@ elif True in short:
             st.success(f"Long at {buy1_time} at price Rs. {buy1_price}")
             st.success(f"Short at {buy2_time} at price Rs. {buy2_price}")
     else:
-        buy1_time = times_list[i1]
-        buy1_price = close["close"][i1]
+        buy1_time = times_list[i1+pos1]
+        buy1_price = close["close"][i1+pos1]
         change1 = square_off_price - buy1_price
         if square_off_price<buy1_price:
             profit1 = True
@@ -211,15 +210,15 @@ if flag==True:
     plt.plot(times_list[:375], close['close'][:375], linestyle='-', color='b')
 
     if i1!=400:
-        plt.scatter(buy1_time,close['close'][i1], color='red', label='Trade')
+        plt.scatter(buy1_time,close['close'][i1+pos1], color='red', label='Trade')
     if i2!=400:
-        plt.scatter(buy2_time,close['close'][i2], color='red')
+        plt.scatter(buy2_time,close['close'][i2+pos1], color='red')
     plt.scatter(times_list[374], close['close'][374], color = "green", label='Square off')
     # Annotate the scatter points
     if i1!=400:
-        plt.annotate(f'{close["close"][i1]:.2f}', (buy1_time, close['close'][i1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
+        plt.annotate(f'{close["close"][i1+pos1]:.2f}', (buy1_time, close['close'][i1+pos1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
     if i2!=400:
-        plt.annotate(f'{close["close"][i2]:.2f}', (buy2_time, close['close'][i2]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
+        plt.annotate(f'{close["close"][i2+pos1]:.2f}', (buy2_time, close['close'][i2+pos1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
     plt.annotate(f'{close["close"][374]:.2f}', (times_list[374], close['close'][374]), textcoords="offset points", xytext=(0,10), ha='center', color='green')
     # Optionally, reduce the number of x-ticks
     plt.xticks(range(0, len(times_list[:375]), 15), rotation=45)
