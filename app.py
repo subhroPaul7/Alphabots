@@ -174,12 +174,16 @@ if flag==True:
     plt.figure(figsize=(10, 6))
     plt.plot(times_list[:375], df['close'][:375], linestyle='-', color='b')
 
-    plt.scatter(buy1_time,close['close'][i1], color='red', label='Trade')
-    plt.scatter(buy2_time,close['close'][i2], color='red')
+    if i1 is not None:
+        plt.scatter(buy1_time,close['close'][i1], color='red', label='Trade')
+    if i2 is not None:
+        plt.scatter(buy2_time,close['close'][i2], color='red')
     plt.scatter(times_list[374], df['close'][374], color = "green", label='Square off')
     # Annotate the scatter points
-    plt.annotate(f'{close["close"][i1]:.2f}', (buy1_time, close['close'][i1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
-    plt.annotate(f'{close["close"][i2]:.2f}', (buy2_time, close['close'][i2]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
+    if i1 is not None:
+        plt.annotate(f'{close["close"][i1]:.2f}', (buy1_time, close['close'][i1]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
+    if i2 is not None:
+        plt.annotate(f'{close["close"][i2]:.2f}', (buy2_time, close['close'][i2]), textcoords="offset points", xytext=(0,10), ha='center', color='black')
     plt.annotate(f'{close["close"][374]:.2f}', (times_list[374], close['close'][374]), textcoords="offset points", xytext=(0,10), ha='center', color='green')
     # Optionally, reduce the number of x-ticks
     plt.xticks(range(0, len(times_list[:375]), 15), rotation=45)
